@@ -12,6 +12,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 // Here I start to build the class that allow me creates windows for my GUI
 public class GUIpresentation extends JFrame
@@ -66,9 +68,11 @@ public class GUIpresentation extends JFrame
         //buttonsContainer.setBackground(Color.lightGray);
         containerImage.setSize(300,300);
         containerImage.add(imageLabel);
+//        containerImage.addKeyListener(escucha);
         containerImage.setBorder(BorderFactory.createTitledBorder(null,"Something about me",
                 TitledBorder.LEFT,TitledBorder.DEFAULT_JUSTIFICATION,
                 new Font("arial",2,20),Color.darkGray));
+//        containerImage.addKeyListener(escucha);
 
         //Agregar escuchas a los botones
         myPhotos.addActionListener(escucha);
@@ -123,7 +127,7 @@ public class GUIpresentation extends JFrame
             }
         });
     }
-    private class Listener implements ActionListener{
+    private class Listener implements ActionListener, KeyListener {
         private ImageIcon  image;
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -178,6 +182,21 @@ public class GUIpresentation extends JFrame
                 revalidate();
                 repaint();
             }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
     }
 }
 
