@@ -63,16 +63,10 @@ public class GUIpresentation extends JFrame
         containerImage.setBorder(BorderFactory.createTitledBorder(null,"Something about me",
                 TitledBorder.LEFT,TitledBorder.DEFAULT_JUSTIFICATION,
                 new Font("arial",2,20),Color.darkGray));
-        containerImage.addMouseListener(escucha);
 
         //Agregar escuchas a los botones
         myPhotos.addActionListener(escucha);
-        myPhotos.addKeyListener(escucha);
-
-        myHobby.addActionListener(escucha);
-        myHobby.addKeyListener(escucha);
-
-        myDescription.addActionListener(escucha);
+        myHobby.addMouseListener(escucha);
         myDescription.addKeyListener(escucha);
 
         //Agreagr los botones al contenedor
@@ -80,13 +74,12 @@ public class GUIpresentation extends JFrame
         buttonsContainer.add(myHobby);
         buttonsContainer.add(myDescription);
 
-//        buttonsContainer.add(buttonsContainer3,BorderLayout.PAGE_END);
-
         //Agrgar los contenedores a la ventata (GUI)
         this.add(containerImage, BorderLayout.CENTER);
         this.add(title, BorderLayout.NORTH);
         this.add(buttonsContainer, BorderLayout.SOUTH);
     }
+    //Clase que recibe una imagen y la escala con un porcentaje dado entre (1,100)
     public void EscalarImagen(ImageIcon image, int escala){
         /*
          * Primero: llamo al metodo configurar icono de la etiquta que contiene la imagen
@@ -98,9 +91,9 @@ public class GUIpresentation extends JFrame
          *          y el "Image.SCALE_SMOOTH"
          * */
 
+        //formula para escalar imagen a un tamaño porcentuado
         int alto =  (image.getIconHeight() * escala) / 100;
         int ancho =   (image.getIconWidth() * escala) / 100;
-
         imageLabel.setIcon(new ImageIcon(image.getImage().getScaledInstance(ancho,alto,Image.SCALE_SMOOTH)));
 
     }
@@ -117,6 +110,8 @@ public class GUIpresentation extends JFrame
         });
     }
     private class Listener implements ActionListener, KeyListener, MouseListener {
+        private ImageIcon  image;
+
         public void _expectation (){
             cajadetexto.setText("There are several things I expect from this course\n" +
                     "The first is to learn all I need to be a better programmer\n" +
@@ -127,21 +122,17 @@ public class GUIpresentation extends JFrame
             containerImage.add(cajadetexto);
         }
         public void _miHobies (){
-            //JOptionPane.showMessageDialog(null,"That I like me");
             porcentaje = 30;
             this.image = new ImageIcon(getClass().getResource("/Recurse/hobbies.png"));
             EscalarImagen(image, porcentaje);
             title.setText("These are my hobbies");
-            //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
         }
         public void _miphoto (){
             porcentaje = 30;
             this.image = new ImageIcon(getClass().getResource("/Recurse/foto.png"));
             EscalarImagen(image, porcentaje);
             title.setText("This is me");
-            //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
         }
-        private ImageIcon  image;
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -177,27 +168,21 @@ public class GUIpresentation extends JFrame
 
         @Override
         public void keyPressed(KeyEvent e) {
-//            JOptionPane.showMessageDialog(null,"That I like me");
 
         }
         @Override
         public void keyReleased(KeyEvent e) {
-//            JOptionPane.showMessageDialog(null,"That I like me");
 
         }
-
 
         @Override
         public void mouseClicked(MouseEvent e) {
             containerImage.remove(cajadetexto);
             switch (e.getClickCount()){
-                case 1: _miphoto();
-                    break;
                 case 2: _miHobies();
                     break;
             }
             revalidate();
-            repaint();
         }
 
         @Override
