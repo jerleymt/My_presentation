@@ -19,8 +19,8 @@ import java.awt.event.KeyListener;
 public class GUIpresentation extends JFrame
 {
     private Title title;
-    private JPanel buttonsContainer, containerImage,buttonsContainer2,buttonsContainer3;
-    private JButton myPhotos,myHobby,myDescription,mas,menos;
+    private JPanel containerImage, buttonsContainer;
+    private JButton myPhotos,myHobby,myDescription;
     public Listener escucha;
     private JLabel imageLabel;
     private  JTextArea cajadetexto;
@@ -47,19 +47,16 @@ public class GUIpresentation extends JFrame
 
         //Nuevas paneles
         buttonsContainer = new JPanel();
-        buttonsContainer2 = new JPanel();
-        buttonsContainer3 = new JPanel();
         containerImage = new JPanel();
 
         //Nuevos Botones
         myHobby = new JButton("My hobbies");
         myPhotos = new JButton("This is me");
         myDescription = new JButton("What I expect about this course");
-        mas = new JButton("ZOOM +");
-        menos = new JButton("ZOOM -");
 
         //Nuevas Areas de texto
         cajadetexto = new JTextArea();
+        cajadetexto.addKeyListener(escucha);
 
         porcentaje = 50;
         //_____________________Fin de Creacion de objetos_________________________
@@ -68,35 +65,29 @@ public class GUIpresentation extends JFrame
         //buttonsContainer.setBackground(Color.lightGray);
         containerImage.setSize(300,300);
         containerImage.add(imageLabel);
-//        containerImage.addKeyListener(escucha);
         containerImage.setBorder(BorderFactory.createTitledBorder(null,"Something about me",
                 TitledBorder.LEFT,TitledBorder.DEFAULT_JUSTIFICATION,
                 new Font("arial",2,20),Color.darkGray));
-//        containerImage.addKeyListener(escucha);
 
         //Agregar escuchas a los botones
         myPhotos.addActionListener(escucha);
+        myPhotos.addKeyListener(escucha);
         myHobby.addActionListener(escucha);
+        myHobby.addKeyListener(escucha);
         myDescription.addActionListener(escucha);
-        mas.addActionListener(escucha);
-        menos.addActionListener(escucha);
+        myDescription.addKeyListener(escucha);
 
         //Agreagr los botones al contenedor
+        buttonsContainer.add(myPhotos);
+        buttonsContainer.add(myHobby);
+        buttonsContainer.add(myDescription);
 
-        buttonsContainer2.add(menos);
-        buttonsContainer2.add(mas);
-
-        buttonsContainer3.add(myPhotos);
-        buttonsContainer3.add(myHobby);
-        buttonsContainer3.add(myDescription);
-
-        buttonsContainer.add(buttonsContainer3,BorderLayout.PAGE_END);
+//        buttonsContainer.add(buttonsContainer3,BorderLayout.PAGE_END);
 
         //Agrgar los contenedores a la ventata (GUI)
         this.add(containerImage, BorderLayout.CENTER);
         this.add(title, BorderLayout.NORTH);
         this.add(buttonsContainer, BorderLayout.SOUTH);
-
     }
     public void EscalarImagen(ImageIcon image, int escala){
         /*
@@ -136,66 +127,67 @@ public class GUIpresentation extends JFrame
                 containerImage.remove(cajadetexto);
                 if (e.getSource() == myPhotos)
                 {
-                    porcentaje = 30;
-                    this.image = new ImageIcon(getClass().getResource("/Recurse/foto.png"));
-                    EscalarImagen(image, porcentaje);
-                    title.setText("This is me");
-                    //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
+                    _miphoto();
+
                 }
                 else if (e.getSource() == myHobby)
                 {
-                    //JOptionPane.showMessageDialog(null,"That I like me");
-                    porcentaje = 30;
-                    this.image = new ImageIcon(getClass().getResource("/Recurse/hobbies.png"));
-                    EscalarImagen(image, porcentaje);
-                    title.setText("These are my hobbies");
-                    //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
-                }
+                    _miHobies();
 
-                else if (e.getSource() == mas )
-                {
-                    porcentaje = porcentaje + 1;
-                    imageLabel.setIcon(image);
-                    EscalarImagen(image, porcentaje);
-                    //this.image = new ImageIcon(image.getImage());
-                    //JOptionPane.showMessageDialog(null,"Se amplio la  imagen");
-                }
-                else if (e.getSource() == menos)
-                {
-                    porcentaje = porcentaje - 1;
-                    imageLabel.setIcon(image);
-                    EscalarImagen(image, porcentaje);
-                    //this.image = new ImageIcon(image.getImage());
-                    //JOptionPane.showMessageDialog(null,"Se redujo la imagen");
                 }
                 else
                 {
-                    buttonsContainer.remove(buttonsContainer2);
-                    cajadetexto.setText("There are several things I expect from this course\n" +
-                            "The first is to learn all I need to be a better programmer\n" +
-                            "The second is to improve those skills that I had learned in previous courses\n" +
-                            "Last and most important, pass the course. \n");
-                    cajadetexto.setBackground(null);
-                    title.setText("My expectation");
-                    containerImage.add(cajadetexto);
+                    _expectation();
                 }
                 revalidate();
                 repaint();
             }
-
+        //Muestra mis espectativas al presionar 'm'
         @Override
         public void keyTyped(KeyEvent e) {
+            imageLabel.setIcon(null);
+            containerImage.remove(cajadetexto);
+
+                if (e.getKeyChar()=='m'||e.getKeyChar()=='M'){
+                    _expectation();
+                }
 
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
+//            JOptionPane.showMessageDialog(null,"That I like me");
+
+        }
+        @Override
+        public void keyReleased(KeyEvent e) {
+//            JOptionPane.showMessageDialog(null,"That I like me");
 
         }
 
-        @Override
-        public void keyReleased(KeyEvent e) {
-
+        public void _expectation (){
+            cajadetexto.setText("There are several things I expect from this course\n" +
+                    "The first is to learn all I need to be a better programmer\n" +
+                    "The second is to improve those skills that I had learned in previous courses\n" +
+                    "Last and most important, pass the course. \n");
+            cajadetexto.setBackground(null);
+            title.setText("My expectation");
+            containerImage.add(cajadetexto);
+        }
+        public void _miHobies (){
+            //JOptionPane.showMessageDialog(null,"That I like me");
+            porcentaje = 30;
+            this.image = new ImageIcon(getClass().getResource("/Recurse/hobbies.png"));
+            EscalarImagen(image, porcentaje);
+            title.setText("These are my hobbies");
+            //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
+        }
+        public void _miphoto (){
+            porcentaje = 30;
+            this.image = new ImageIcon(getClass().getResource("/Recurse/foto.png"));
+            EscalarImagen(image, porcentaje);
+            title.setText("This is me");
+            //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
         }
     }
 }
