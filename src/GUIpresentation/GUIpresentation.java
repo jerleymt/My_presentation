@@ -10,10 +10,7 @@ package GUIpresentation;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 // Here I start to build the class that allow me creates windows for my GUI
 public class GUIpresentation extends JFrame
@@ -56,8 +53,6 @@ public class GUIpresentation extends JFrame
 
         //Nuevas Areas de texto
         cajadetexto = new JTextArea();
-        cajadetexto.addKeyListener(escucha);
-
         porcentaje = 50;
         //_____________________Fin de Creacion de objetos_________________________
 
@@ -68,12 +63,15 @@ public class GUIpresentation extends JFrame
         containerImage.setBorder(BorderFactory.createTitledBorder(null,"Something about me",
                 TitledBorder.LEFT,TitledBorder.DEFAULT_JUSTIFICATION,
                 new Font("arial",2,20),Color.darkGray));
+        containerImage.addMouseListener(escucha);
 
         //Agregar escuchas a los botones
         myPhotos.addActionListener(escucha);
         myPhotos.addKeyListener(escucha);
+
         myHobby.addActionListener(escucha);
         myHobby.addKeyListener(escucha);
+
         myDescription.addActionListener(escucha);
         myDescription.addKeyListener(escucha);
 
@@ -118,7 +116,31 @@ public class GUIpresentation extends JFrame
             }
         });
     }
-    private class Listener implements ActionListener, KeyListener {
+    private class Listener implements ActionListener, KeyListener, MouseListener {
+        public void _expectation (){
+            cajadetexto.setText("There are several things I expect from this course\n" +
+                    "The first is to learn all I need to be a better programmer\n" +
+                    "The second is to improve those skills that I had learned in previous courses\n" +
+                    "Last and most important, pass the course. \n");
+            cajadetexto.setBackground(null);
+            title.setText("My expectation");
+            containerImage.add(cajadetexto);
+        }
+        public void _miHobies (){
+            //JOptionPane.showMessageDialog(null,"That I like me");
+            porcentaje = 30;
+            this.image = new ImageIcon(getClass().getResource("/Recurse/hobbies.png"));
+            EscalarImagen(image, porcentaje);
+            title.setText("These are my hobbies");
+            //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
+        }
+        public void _miphoto (){
+            porcentaje = 30;
+            this.image = new ImageIcon(getClass().getResource("/Recurse/foto.png"));
+            EscalarImagen(image, porcentaje);
+            title.setText("This is me");
+            //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
+        }
         private ImageIcon  image;
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,11 +168,10 @@ public class GUIpresentation extends JFrame
         @Override
         public void keyTyped(KeyEvent e) {
             imageLabel.setIcon(null);
-            containerImage.remove(cajadetexto);
-
                 if (e.getKeyChar()=='m'||e.getKeyChar()=='M'){
                     _expectation();
                 }
+            repaint();
 
         }
 
@@ -165,29 +186,38 @@ public class GUIpresentation extends JFrame
 
         }
 
-        public void _expectation (){
-            cajadetexto.setText("There are several things I expect from this course\n" +
-                    "The first is to learn all I need to be a better programmer\n" +
-                    "The second is to improve those skills that I had learned in previous courses\n" +
-                    "Last and most important, pass the course. \n");
-            cajadetexto.setBackground(null);
-            title.setText("My expectation");
-            containerImage.add(cajadetexto);
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            containerImage.remove(cajadetexto);
+            switch (e.getClickCount()){
+                case 1: _miphoto();
+                    break;
+                case 2: _miHobies();
+                    break;
+            }
+            revalidate();
+            repaint();
         }
-        public void _miHobies (){
-            //JOptionPane.showMessageDialog(null,"That I like me");
-            porcentaje = 30;
-            this.image = new ImageIcon(getClass().getResource("/Recurse/hobbies.png"));
-            EscalarImagen(image, porcentaje);
-            title.setText("These are my hobbies");
-            //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
         }
-        public void _miphoto (){
-            porcentaje = 30;
-            this.image = new ImageIcon(getClass().getResource("/Recurse/foto.png"));
-            EscalarImagen(image, porcentaje);
-            title.setText("This is me");
-            //buttonsContainer.add(buttonsContainer2,BorderLayout.SOUTH);
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
         }
     }
 }
